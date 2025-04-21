@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover local businesses and services with Business Finder. Search by location and service to find the best options near you.">
+    <meta name="keywords" content="business finder, service discovery, local businesses, services near me">
+    <title>Business Finder</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* CSS Styles (same as original) */
+        :root {
+            --primary-color:rgb(221, 143, 41); 
+            --secondary-color: #e67e22; 
+            --background-color: rgba(0, 0, 0, 0.8); 
+            --text-color: #333; 
+            --theme-color: #f5f5f5; 
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--theme-color);
+            color: var(--text-color);
+        }
+
+        marquee {
+            display: block;
+            padding: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            background-color: var(--background-color);
+        }
+
+        .auth-links {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+        }
+
+        .auth-links a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        h1 {
+            color: black;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid darkorange;
+            border-radius: 10px;
+            background-color: rgba(255, 165, 0, 0.2);
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: black;
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+            color: var(--text-color);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--text-color);
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .business-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+        .business-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            background-color: #fff;
+            color: var(--text-color);
+        }
+
+        .business-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .business-card h3 {
+            color: var(--primary-color);
+            margin: 10px 0 5px;
+        }
+
+        .business-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .business-card a:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 250px;
+            padding: 20px;
+            border: 2px solid darkorange;
+            text-align: left;
+            background-color: ;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            display: block;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .sidebar a:hover {
+            color: var(--secondary-color);
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 0;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .dropdown li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .dropdown a:hover {
+            background: lightgray;
+        }
+
+        @media (max-width: 768px) {
+            .auth-links {
+                position: static;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .business-list {
+                justify-content: center;
+            }
+            .business-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <marquee>Are you a business owner? Sign up to create a business profile for your business!</marquee>
+    <div class="auth-links">
+        <a href="{% url 'signup' %}">Sign Up</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+    <h1>BUSINESS FINDER</h1>
+    <h2>A SERVICE DISCOVERY PLATFORM</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="location">Location:</label>
+        <input type="text" name="location" id="location" placeholder="Enter location" required minlength="3">
+        <br>
+        <label for="service">Service:</label>
+        <input type="text" name="service" id="service" placeholder="Enter service" required minlength="3">
+        <br>
+        <button type="submit">Search</button>
+    </form>
+    <h2>Available Businesses</h2>
+    {% if businesses %}
+        <div class="business-list">
+            {% for business in businesses %}
+                <div class="business-card">
+                    {% if business.overview_picture %}
+                        <img src="{{ business.overview_picture.url }}" alt="{{ business.business_name }} overview picture">
+                    {% endif %}
+                    <h3>{{ business.business_name }}</h3>
+                    <p><strong>Services Offered:</strong> {{ business.services_offered }}</p>
+                    <p><strong>Location:</strong> {{ business.location }}</p>
+                    <p><strong>Contact:</strong> {{ business.contact_phone }}</p>
+                    <p><strong>Average Rating:</strong> {{ business.avg_rating|default:"No ratings yet." }}</p>
+                    <a href="{% url 'view_business_profile' business.id %}">View Profile</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: var(--text-color); text-align: center;">No businesses found for the specified criteria!</p>
+    {% endif %}
+    
+    <footer>
+        <p>© 2025 Business Finder. All rights reserved.</p>
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+    </footer>
+    <div class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">HOME</a></li>
+            <li><a href="{% url 'profile' %}">PROFILE</a></li>
+    
+            <li class="messages-dropdown">
+                <a href="#" id="messages-toggle">MESSAGES</a>
+                <ul class="dropdown" id="messages-dropdown">
+                    {% for conversation in conversations %}
+                        <li>
+                            <a href="#" class="conversation-link" data-business-owner-id="{{ conversation.id }}">
+                                {{ conversation.username }} - {{ conversation.last_message|truncatewords:5 }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>No messages</li>
+                    {% endfor %}
+                </ul>
+            </li>
+    
+            {% if request.user.is_authenticated %}
+                {# More robust business profile check #}
+                {% with business_profiles=request.user.businessprofile_set.all %}
+                    {% if business_profiles %}
+                        <li><a href="{% url 'business_dashboard' business_profiles.0.id %}">ANALYTICS</a></li>
+                    {% endif %}
+                {% endwith %}
+                
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var toggle = document.getElementById("messages-toggle");
+            var dropdown = document.getElementById("messages-dropdown");
+    
+            toggle.addEventListener("click", function (event) {
+                event.preventDefault();
+                dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+            });
+    
+            document.addEventListener("click", function (event) {
+                if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

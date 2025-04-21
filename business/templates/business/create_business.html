@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Business Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <h2>Create Your Business Profile</h2>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            <label for="business_name">Business Name:</label>
+            {{ form.business_name }}
+            {{ form.business_name.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="services_offered">Services Offered:</label>
+            {{ form.services_offered }}
+            {{ form.services_offered.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="working_hours">Working Hours:</label>
+            {{ form.working_hours }}
+            {{ form.working_hours.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location:</label>
+            {{ form.location }}
+            {{ form.location.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="contact_phone">Contact Phone (with country code):</label>
+            {{ form.contact_phone }}
+            {{ form.contact_phone.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="contact_whatsapp">WhatsApp Contact (with country code):</label>
+            {{ form.contact_whatsapp }}
+            {{ form.contact_whatsapp.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="contact_email">Email:</label>
+            {{ form.contact_email }}
+            {{ form.contact_email.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website:</label>
+            {{ form.website }}
+            {{ form.website.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="overview_picture">Overview Picture:</label>
+            {{ form.overview_picture }}
+            {{ form.overview_picture.errors }}
+        </div>
+
+        <button type="submit">Create Profile</button>
+    </form>
+
+    <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+</body>
+</html>

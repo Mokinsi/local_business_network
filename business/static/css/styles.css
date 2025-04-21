@@ -1,0 +1,231 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Style */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #0077b6, #74ebd5); /* Blue and mint gradient */
+    color: #003366; /* Deep blue for text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Marquee */
+marquee {
+    display: block;
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+}
+
+/* Auth Links */
+.auth-links {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+}
+.auth-links a {
+    color: #ffffff; /* White links */
+    font-weight: bold;
+    background-color: #0077b6;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.auth-links a:hover {
+    background-color: #3c9dce; /* Darker blue on hover */
+}
+
+/* Main Heading */
+h1 {
+    color: #6a1b9a; /* Dark purple */
+    font-size: 2.5rem;
+    margin: 20px 0;
+    padding: 20px;
+    border: 2px solid darkorange; /* Adds a border */
+    border-radius: 10px; /* Rounds the corners of the border */
+    background-color: rgba(255, 165, 0, 0.2); /* Light orange background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+}
+
+/* Sub Headings */
+h2 {
+    color: #333333; /* Black for subheadings */
+    font-size: 1.8rem;
+    margin: 15px 0;
+    text-align: center;
+}
+
+/* Form Styles */
+form {
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+}
+form input[type="text"]:focus {
+    border-color: #0077b6; /* Blue focus outline */
+}
+form button {
+    background-color: #0077b6;
+    color: #f8f8f8;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+form button:hover {
+    background-color: #005f87; /* Darker blue hover */
+}
+
+/* Business Cards Container */
+.business-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Individual Business Cards */
+.business-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+}
+.business-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.business-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.business-card h3 {
+    color: #0077b6; /* Primary blue */
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+.business-card p {
+    color: #444444; /* Neutral text */
+    margin: 5px 0;
+}
+.business-card a {
+    color: #0077b6;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+.business-card a:hover {
+    color: #005f87; /* Darker blue hover */
+    text-decoration: underline;
+}
+
+/* No Businesses Found */
+.no-businesses {
+    color: #ffffff;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 250px;
+    padding: 20px;
+    text-align: left;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar li {
+    margin: 15px 0;
+}
+.sidebar a {
+    text-decoration: none;
+    color: #003366; /* Deep blue for sidebar links */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+}
+.sidebar a:hover {
+    color: #005f87;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1, h2 {
+        font-size: 1.5rem;
+    }
+    form {
+        width: 100%;
+        max-width: 90%;
+    }
+    .business-list {
+        grid-template-columns: 1fr; /* Single column on small screens */
+    }
+    .auth-links {
+        flex-direction: column;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Dark Mode for Business List */
+.business-list.dark-mode {
+    background-color: #444;
+}
+
+.business-card.dark-mode {
+    background-color: #555;
+    border: 1px solid #777;
+}

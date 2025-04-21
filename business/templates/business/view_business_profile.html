@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ business.business_name }} - Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #333;
+        }
+        .business-name {
+            font-size: 2em;
+            color: #2c3e50;
+        }
+        .overview-picture {
+            max-width: 150px;
+            border-radius: 8px;
+        }
+        .services, .working-hours, .location, .contact-details {
+            margin-top: 15px;
+            color: #34495e;
+        }
+        .contact-details a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .contact-details a:hover {
+            color: #1a5276;
+        }
+        .reviews-section {
+            margin-top: 30px;
+        }
+        .avg-rating {
+            font-size: 1.2em;
+            color: #d35400;
+        }
+        .review {
+            border-top: 1px solid #ecf0f1;
+            padding-top: 10px;
+            color: #7f8c8d;
+        }
+        .review .rating {
+            color: #f39c12;
+        }
+        .submit-review-btn, .update-btn, .delete-btn, .dashboard-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            color: #ffffff;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .submit-review-btn {
+            background-color: #27ae60;
+        }
+        .submit-review-btn:hover {
+            background-color: #229954;
+        }
+        .update-btn {
+            background-color: #2980b9; /* Blue for update button */
+        }
+        .update-btn:hover {
+            background-color: #1a5276; /* Darker blue on hover */
+        }
+        .delete-btn {
+            background-color: #c0392b; /* Red for delete button */
+        }
+        .delete-btn:hover {
+            background-color: #a93226; /* Darker red on hover */
+        }
+        .dashboard-btn {
+            background-color: #f39c12; /* Orange for dashboard button */
+        }
+        .dashboard-btn:hover {
+            background-color: #e67e22; /* Darker orange on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            {% if business.overview_picture %}
+                <img src="{{ business.overview_picture.url }}" alt="Overview Picture" class="overview-picture">
+            {% endif %}
+            <h1 class="business-name">{{ business.business_name }}</h1>
+        </div>
+
+        <div class="services">
+            <strong>Services Offered:</strong>
+            <p>{{ business.services_offered }}</p>
+        </div>
+
+        <div class="working-hours">
+            <strong>Working Hours:</strong>
+            <p>{{ business.working_hours }}</p>
+        </div>
+
+        <div class="location">
+            <strong>Location:</strong>
+            <p>{{ business.location }}</p>
+        </div>
+
+        <div class="contact-details">
+            <strong>Contact Information:</strong>
+            <p>
+                Phone: <a href="tel:{{ business.contact_phone }}">{{ business.contact_phone }}</a><br>
+                WhatsApp: <a href="https://wa.me/{{ business.contact_whatsapp }}">{{ business.contact_whatsapp }}</a><br>
+                Email: <a href="mailto:{{ business.contact_email }}">{{ business.contact_email }}</a><br>
+                {% if business.website %}
+                    Website: <a href="{{ business.website }}" target="_blank">{{ business.website }}</a>
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="reviews-section">
+            <h3>Reviews</h3>
+            <p class="avg-rating">Average Rating: {{ avg_rating|default:"No ratings yet." }}</p>
+            
+            {% for review in reviews %}
+                <div class="review">
+                    <p><strong>{{ review.user.username }}</strong> - 
+                        <span class="rating">
+                            {% for i in review.rating %}
+                                &#9733; <!-- Filled star -->
+                            {% endfor %}
+                            {% for i in 5|add:"-review.rating" %}
+                                &#9734; <!-- Empty star -->
+                            {% endfor %}
+                        </span>
+                    </p>
+                    <p>{{ review.comment }}</p>
+                </div>
+            {% empty %}
+                <p>No reviews yet.</p>
+            {% endfor %}
+        
+            {% if user.is_authenticated and user != business.user %}
+                <!-- Allow anyone to submit a review -->
+                <a href="{% url 'submit_review' business.id %}" class="submit-review-btn">Submit a Review</a>
+            {% endif %}
+        </div>
+
+        {% if user == business.user %}
+    <div class="profile-actions">
+        <a class="update-btn" href="{% url 'update_business' business.id %}">Update Profile</a>
+        
+        <!-- Delete Profile Form -->
+        <form action="{% url 'delete_business' business.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="submit" class="delete-btn" value="Delete Profile" onclick="return confirm('Are you sure you want to delete this profile?');">
+        </form>
+        
+        <p><a href="{% url 'index' %}">Back to Homepage</a></p>
+    </div>
+
+    <!-- Dashboard Button (Only visible for business owner) -->
+    <a href="{% url 'dashboard' business_id=business.id %}" class="dashboard-btn">Go to Dashboard</a>
+{% endif %}
+    </div>
+    {% if business.user.is_authenticated and user != business.user %}
+    <a href="{% url 'chat' business.user.id %}" class="submit-review-btn">Chat with Business Owner</a>
+{% endif %}
+
+</body>
+</html>

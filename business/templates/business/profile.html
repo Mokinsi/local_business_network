@@ -1,0 +1,173 @@
+<!-- business/templates/business/profile.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your Business Profile">
+    <title>Your Business Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Body Style */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f0f0f0, #ffffff); /* Light gradient */
+            color: #003366; /* Deep blue for text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            height: 100vh;
+        }
+        
+        /* Profile Container */
+        .profile-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        /* Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .business-name {
+            font-size: 2em;
+            color: #2c3e50;
+        }
+
+        /* Section Styles */
+        .services, .working-hours, .location, .contact-details {
+            margin-top: 15px;
+            padding: 10px 0;
+            color: #34495e;
+        }
+
+        .contact-details a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            color: #1a5276;
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            color: #ffffff;
+            border-radius: 6px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-review-btn {
+            background-color: #27ae60;
+        }
+
+        .submit-review-btn:hover {
+            background-color: #229954;
+        }
+
+        .update-btn {
+            background-color: #2980b9;
+        }
+
+        .update-btn:hover {
+            background-color: #1a5276;
+        }
+
+        .delete-btn {
+            background-color: #c0392b;
+        }
+
+        .delete-btn:hover {
+            background-color: #a93226;
+        }
+
+        .dashboard-btn {
+            background-color: #f39c12;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 30px;
+        }
+
+        .avg-rating {
+            font-size: 1.2em;
+            color: #d35400;
+        }
+
+        .review {
+            border-top: 1px solid #ecf0f1;
+            padding-top: 10px;
+            color: #7f8c8d;
+        }
+
+        .review .rating {
+            color: #f39c12;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2 class="business-name">{{ business.business_name }}</h2>
+        
+        <!-- Business Information Section -->
+        <div class="business-info">
+            <p class="services"><strong>Services Offered:</strong> {{ business.services_offered }}</p>
+            <p class="working-hours"><strong>Working Hours:</strong> {{ business.working_hours }}</p>
+            <p class="location"><strong>Location:</strong> {{ business.location }}</p>
+            <p class="contact-details"><strong>Contact Phone:</strong> <a href="tel:{{ business.contact_phone }}">{{ business.contact_phone }}</a></p>
+            <p class="contact-details"><strong>WhatsApp Contact:</strong> <a href="https://wa.me/{{ business.contact_whatsapp }}" target="_blank">{{ business.contact_whatsapp }}</a></p>
+            <p class="contact-details"><strong>Email Contact:</strong> <a href="mailto:{{ business.contact_email }}">{{ business.contact_email }}</a></p>
+        </div>
+
+        <!-- Profile Actions Section -->
+        <div class="profile-actions">
+            <a class="button update-btn" href="{% url 'update_business' business.id %}">Update Profile</a>
+            <form method="post" action="{% url 'delete_business' business.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="button delete-btn">Delete Profile</button>
+            </form>
+            <p><a class="button" href="{% url 'logout' %}">Logout</a></p>
+            <p><a class="button" href="{% url 'index' %}">Back to Homepage</a></p>
+        </div>
+    </div>
+</body>
+</html>

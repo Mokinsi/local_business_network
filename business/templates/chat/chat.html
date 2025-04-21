@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ business_owner.username }}</title>
+    <style>
+        .chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .message.sent {
+            background-color: #d4f4d2;
+            text-align: right;
+            align-self: flex-end;
+        }
+        .message.received {
+            background-color: #f0f0f0;
+            text-align: left;
+            align-self: flex-start;
+        }
+        .message-form {
+            display: flex;
+            gap: 10px;
+        }
+        .message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .send-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #27ae60;
+            color: white;
+            cursor: pointer;
+        }
+        .send-button:hover {
+            background-color: #229954;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Chat with {{ business_owner.username }}</h2>
+
+        <div class="messages" id="messages">
+            {% for message in messages %}
+                <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+                    <p>{{ message.message }}</p>
+                    <small>{{ message.timestamp }}</small>
+                </div>
+            {% empty %}
+                <p>No messages yet.</p>
+            {% endfor %}
+        </div>
+
+        <form id="message-form" class="message-form">
+            <input type="text" id="message-input" class="message-input" placeholder="Type a message..." required>
+            <button type="submit" class="send-button">Send</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const messagesContainer = document.querySelector("#messages");
+            const messageInput = document.querySelector("#message-input");
+            const messageForm = document.querySelector("#message-form");
+            const businessOwnerId = "{{ business_owner.id }}";  // Get chat ID from template
+            
+            function scrollToBottom() {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            scrollToBottom();  // Scroll to latest message on load
+
+            async function fetchMessages() {
+                try {
+                    const response = await fetch(`/business/fetch_messages/${businessOwnerId}/`);
+                    const data = await response.json();
+                    
+                    messagesContainer.innerHTML = "";
+                    
+                    data.messages.forEach(msg => {
+                        const messageElement = document.createElement("div");
+                        messageElement.classList.add("message", msg.sender === "{{ user.username }}" ? "sent" : "received");
+                        messageElement.innerHTML = `<p>${msg.message}</p><small>${msg.timestamp}</small>`;
+                        messagesContainer.appendChild(messageElement);
+                    });
+
+                    scrollToBottom();
+                } catch (error) {
+                    console.error("Error fetching messages:", error);
+                }
+            }
+
+            async function sendMessage(event) {
+                event.preventDefault();
+                const message = messageInput.value.trim();
+
+                if (message) {
+                    try {
+                        await fetch(`/business/send_message/${businessOwnerId}/`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": "{{ csrf_token }}"
+                            },
+                            body: JSON.stringify({ message: message })
+                        });
+
+                        messageInput.value = "";
+                        fetchMessages();  // Refresh chat
+                    } catch (error) {
+                        console.error("Error sending message:", error);
+                    }
+                }
+            }
+
+            messageForm.addEventListener("submit", sendMessage);
+
+            setInterval(fetchMessages, 3000); // Poll new messages every 3 seconds
+        });
+    </script>
+
+</body>
+</html>

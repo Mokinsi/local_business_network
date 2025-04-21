@@ -1,0 +1,58 @@
+<!-- business/templates/business/update_business.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Business Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <h2>Update Your Business Profile</h2>
+    
+    {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">  <!-- Added enctype for file uploads -->
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="business_name">Business Name:</label>
+        {{ form.business_name }}
+
+        <label for="services_offered">Services Offered:</label>
+        {{ form.services_offered }}
+
+        <label for="working_hours">Working Hours:</label>
+        {{ form.working_hours }}
+
+        <label for="location">Location:</label>
+        {{ form.location }}
+
+        <label for="contact_phone">Contact Phone (with country code):</label>
+        {{ form.contact_phone }}
+
+        <label for="contact_whatsapp">WhatsApp Contact (with country code):</label>
+        {{ form.contact_whatsapp }}
+
+        <label for="contact_email">Email:</label>
+        {{ form.contact_email }}
+
+        <label for="website">Website:</label>
+        {{ form.website }}
+
+        <label for="overview_picture">Overview Picture:</label>
+        {{ form.overview_picture }}
+
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <p><a href="{% url 'profile' %}">Back to Profile</a></p>  <!-- Optional: Link to navigate back to the profile -->
+</body>
+</html>
