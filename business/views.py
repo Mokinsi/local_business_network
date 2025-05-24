@@ -94,21 +94,32 @@ def business_dashboard(request, business_id):
     """View for business analytics dashboard."""
     business = get_object_or_404(BusinessProfile, id=business_id, user=request.user)
     
-    # Remove the redundant check - get_object_or_404 already handles this
+    # Get or create analytics and increment views
     analytics, _ = BusinessAnalytics.objects.get_or_create(business=business)
-
+    analytics.increment_views()
+    
+    # Get real analytics data (last 30 days)
+    today = timezone.now().date()
+    thirty_days_ago = today - timedelta(days=30)
+    
+    daily_data = BusinessAnalytics.objects.filter(
+        business=business,
+        last_viewed__date__gte=thirty_days_ago
+    ).order_by('last_viewed')
+    
+    # Prepare chart data
     analytics_data = {
-        "labels": ["Jan", "Feb", "Mar", "Apr", "May"],
-        "views": [10, 20, 15, 30, 40],
-        "clicks": [5, 10, 7, 18, 22],
+        "labels": [entry.last_viewed.strftime("%b %d") for entry in daily_data],
+        "views": [entry.views for entry in daily_data],
+        "clicks": [entry.clicks for entry in daily_data],
     }
 
-    return render(request, "business/dashboard.html", {  # Updated template path
+    return render(request, "business/dashboard.html", {
         "business": business,
         "analytics": analytics,
         "analytics_data": analytics_data
     })
-
+    
 @login_required
 def profile(request):
     """User profile view that handles multiple profiles."""

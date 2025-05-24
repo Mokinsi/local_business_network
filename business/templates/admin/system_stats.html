@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <table>
+            <caption>System Statistics</caption>
+            <tr><th>Total Businesses:</th><td>{{ total_businesses }}</td></tr>
+            <tr><th>Total Users:</th><td>{{ total_users }}</td></tr>
+            <tr><th>Total Reviews:</th><td>{{ total_reviews }}</td></tr>
+            <tr><th>Total Messages:</th><td>{{ total_messages }}</td></tr>
+            <tr><th>Total Chats:</th><td>{{ total_chats }}</td></tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

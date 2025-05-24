@@ -63,26 +63,14 @@ class BusinessAnalytics(models.Model):
         verbose_name_plural = "Business Analytics"
 
     def increment_views(self):
-        """Increment view count each time the profile is viewed."""
-        self.views += 1
-        self.save(update_fields=['views'])
+        """Increment view count."""
+        self.views = models.F('views') + 1
+        self.save(update_fields=['views', 'last_viewed'])
 
     def increment_clicks(self):
-        """Increment click count each time a tracked action is clicked."""
-        self.clicks += 1
+        """Increment click count."""
+        self.clicks = models.F('clicks') + 1
         self.save(update_fields=['clicks'])
-
-    def reset_daily_views(self):
-        """Reset daily view count if a new day starts."""
-        if timezone.now().date() != self.last_viewed.date():
-            self.views = 0
-            self.save(update_fields=['views'])
-
-    def reset_monthly_views(self):
-        """Reset monthly view count if a new month starts."""
-        if timezone.now().month != self.last_viewed.month:
-            self.views = 0
-            self.save(update_fields=['views'])
 
 
 class Message(models.Model):
